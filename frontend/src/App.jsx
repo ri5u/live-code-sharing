@@ -1,24 +1,27 @@
 import Editor from '@monaco-editor/react';
+import { useRef } from 'react';
 
 export default function App() {
   const someDefaultValue = "// HELLOOO WORLD";
-  function handleEditorChange(value, event) {
-    console.log(value);
-  }
+  const timerRef = useRef(null);
 
-  function handleEditorDidMount(editor, monaco){
-    console.log('onMount: the editor instance', editor);
-    console.log('onMount: the monaco instance:', monaco);
-  }
+  function handleTyping(value, event) {
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      console.log("Sent to AI", value);
+    }, 2000);
+  };
+
 
 
   return(
   <div>
     <Editor 
-      height="90vh" 
+      height="100vh" 
+      theme="vs-dark"
       defaultLanguage='javascript' 
       defaultValue={someDefaultValue} 
-      onChange={handleEditorChange}
+      onChange={handleTyping}
     />
   </div>)
 }
